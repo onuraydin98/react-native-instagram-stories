@@ -10,7 +10,8 @@ export default StyleSheet.create( {
     top: 0,
     left: 0,
     width: WIDTH,
-    height: HEIGHT,
+    height: HEIGHT ,
+    
   },
   bgAnimation: StyleSheet.absoluteFillObject,
 } );

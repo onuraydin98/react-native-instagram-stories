@@ -12,6 +12,8 @@ import {
   AVATAR_SIZE, LOADER_ID, LOADER_URL, STROKE_WIDTH,
 } from '../../core/constants';
 import { StoryLoaderProps } from '../../core/dto/componentsDTO';
+import { View } from 'react-native';
+import { Image } from 'react-native';
 
 const AnimatedCircle = Animated.createAnimatedComponent( Circle );
 const AnimatedSvg = Animated.createAnimatedComponent( Svg );
@@ -86,26 +88,14 @@ const Loader: FC<StoryLoaderProps> = ( {
   );
 
   return (
-    <AnimatedSvg width={size} height={size} style={animatedStyles}>
-      <Defs>
-        <LinearGradient id={LOADER_ID} x1="0%" y1="0%" x2="100%" y2="0%">
-          {colors?.map( ( item, i ) => (
-            <Stop key={item} offset={i / colors.length} stopColor={item} />
-          ) )}
-        </LinearGradient>
-      </Defs>
-      <AnimatedCircle
-        cx={size / 2}
-        cy={size / 2}
-        r={RADIUS}
-        fill="none"
-        stroke={LOADER_URL}
-        strokeWidth={STROKE_WIDTH}
-        strokeLinecap="round"
-        strokeDasharray={[ CIRCUMFERENCE ]}
-        animatedProps={animatedProps}
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      <Image
+        source={require("../../assets/loading3.gif")}
+        style={{ width: size * 1.2, height: size * 1.2 }}
+        resizeMode="contain"
       />
-    </AnimatedSvg>
+    </View>
+
   );
 
 };

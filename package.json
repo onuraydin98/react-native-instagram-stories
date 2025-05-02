@@ -82,5 +82,8 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
     "verbose": true
+  },
+  "dependencies": {
+    "react-native-linear-gradient": "^2.8.3"
   }
 }

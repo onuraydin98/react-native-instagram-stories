@@ -1,7 +1,5 @@
-
-jest.mock('react-native-reanimated', () => {
-
-  const View = require('react-native').View;
+jest.mock("react-native-reanimated", () => {
+  const View = require("react-native").View;
 
   return {
     Value: jest.fn(),
@@ -15,14 +13,18 @@ jest.mock('react-native-reanimated', () => {
     createAnimatedComponent: (cb) => cb,
     Extrapolate: { CLAMP: jest.fn() },
     Transition: {
-      Together: 'Together',
-      Out: 'Out',
-      In: 'In',
+      Together: "Together",
+      Out: "Out",
+      In: "In",
     },
     useSharedValue: jest.fn(),
     useDerivedValue: (a) => ({ value: a() }),
     useAnimatedScrollHandler: () => () => {},
-    useAnimatedGestureHandler: ({onStart, onActive, onFinish}) => ({onStart, onActive, onFinish}),
+    useAnimatedGestureHandler: ({ onStart, onActive, onFinish }) => ({
+      onStart,
+      onActive,
+      onFinish,
+    }),
     useAnimatedStyle: (cb) => cb(),
     useAnimatedRef: () => ({ current: null }),
     useAnimatedReaction: jest.fn(),
@@ -78,24 +80,23 @@ jest.mock('react-native-reanimated', () => {
       inOut: (cb) => cb(),
     },
     Extrapolation: {
-      EXTEND: 'extend',
-      CLAMP: 'clamp',
-      IDENTITY: 'identity',
+      EXTEND: "extend",
+      CLAMP: "clamp",
+      IDENTITY: "identity",
     },
     runOnJS: (fn) => fn,
     runOnUI: (fn) => fn,
   };
 });
 
-jest.mock('react-native-gesture-handler', () => {
-
-  const View = require('react-native').View;
+jest.mock("react-native-gesture-handler", () => {
+  const View = require("react-native").View;
 
   return {
-    PanGestureHandler: ({onGestureEvent, children}) => (
+    PanGestureHandler: ({ onGestureEvent, children }) => (
       <View
-        onResponderStart={onGestureEvent.onStart} 
-        onResponderEnd={onGestureEvent.onFinish} 
+        onResponderStart={onGestureEvent.onStart}
+        onResponderEnd={onGestureEvent.onFinish}
         onResponderMove={onGestureEvent.onActive}
         testID="gestureContainer"
       >
@@ -104,22 +105,19 @@ jest.mock('react-native-gesture-handler', () => {
     ),
     gestureHandlerRootHOC: (Component) => Component,
   };
-
 });
 
-jest.mock('./src/core/helpers/storage', () => ({
+jest.mock("./src/core/helpers/storage", () => ({
   clearProgressStorage: () => {},
   getProgressStorage: jest.fn(),
   setProgressStorage: jest.fn(),
 }));
 
-jest.mock('./src/components/Image/video', () => {
+jest.mock("./src/components/Image/video", () => {
+  const React = require("react");
+  const { View } = require("react-native");
 
-  const React = require('react');
-  const { View } = require('react-native');
-
-  return ( props ) => {
-  
+  return (props) => {
     const { onLoad, onLayout } = props;
 
     onLoad?.(10000);
@@ -129,19 +127,26 @@ jest.mock('./src/components/Image/video', () => {
   };
 });
 
-jest.mock('@shopify/flash-list', () => {
+jest.mock("@shopify/flash-list", () => {
+  const React = require("react");
+  const { ScrollView } = require("react-native");
 
-  const React = require('react');
-  const { ScrollView } = require('react-native');
+  return {
+    FlashList: ({ data, renderItem, ...props }) => {
+      return (
+        <ScrollView {...props}>
+          {data.map((item, index) => renderItem({ item, index }))}
+        </ScrollView>
+      );
+    },
+  };
+});
 
-  return {FlashList: ({ data, renderItem, ...props }) => {
-
-    return (
-      <ScrollView {...props}>
-        {data.map(( item, index ) => renderItem({ item, index }))}
-      </ScrollView>
-    )
-
-  }};
-
+jest.mock("react-native-linear-gradient", () => {
+  const React = require("react");
+  const { View } = require("react-native");
+  return (props) => {
+    const { children, style } = props;
+    return <View style={style}>{children}</View>;
+  };
 });

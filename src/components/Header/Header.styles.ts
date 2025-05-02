@@ -18,8 +18,6 @@ export default StyleSheet.create( {
     flex: 1,
   },
   avatar: {
-    borderWidth: 1.5,
-    borderColor: '#FFF',
     overflow: 'hidden',
   },
 } );
