@@ -2,14 +2,37 @@
   "name": "@birdwingo/react-native-instagram-stories",
   "version": "1.3.12",
   "description": "A versatile and captivating React Native component that empowers developers to seamlessly integrate Instagram-style stories into their mobile applications, fostering an engaging and interactive user experience.",
-  "main": "src/index.tsx",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
   "source": "src/index.tsx",
+  "exports": {
+    ".": {
+      "types": "./lib/typescript/index.d.ts",
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js",
+      "react-native": "./lib/commonjs/index.js",
+      "default": "./lib/commonjs/index.js"
+    }
+  },
   "scripts": {
     "prepare": "husky install",
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run build:clean && npm run build:ts && npm run build:assets",
+    "build:clean": "rm -rf lib",
+    "build:ts": "npm run build:commonjs && npm run build:module && npm run build:typescript",
+    "build:commonjs": "tsc -p tsconfig.build.json --module commonjs --outDir lib/commonjs",
+    "build:module": "tsc -p tsconfig.build.json --module esnext --outDir lib/module",
+    "build:typescript": "tsc -p tsconfig.build.json --declaration --emitDeclarationOnly --outDir lib/typescript",
+    "build:assets": "npm run copy:assets",
+    "copy:assets": "node scripts/copy-assets.js",
     "release": "standard-version",
     "test": "jest --coverage"
   },
+  "files": [
+    "lib/",
+    "src/",
+    "assets/"
+  ],
   "repository": "https://github.com/birdwingo/react-native-instagram-stories.git",
   "keywords": [
     "react-native",
